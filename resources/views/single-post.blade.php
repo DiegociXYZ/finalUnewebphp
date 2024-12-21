@@ -15,17 +15,11 @@
             <p class="text-muted small mb-4">
                 <a href="#"><img class="avatar-tiny"
                         src="https://gravatar.com/avatar/f64fc44c03a8a7eb1d52502950879659?s=128" /></a>
-                Posted by <a href="#">{{ $post->user->username }}</a> on 2/3/2019
+                Posted by <a href="#">{{ $post->user->username }}</a> {{ $post->created_at->format('j/n/Y') }}
             </p>
 
             <div class="body-content">
-                <p>My roommate yells at me when I destroy things, but I do what I want.</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam praesentium laboriosam unde fuga
-                    accusamus reiciendis laudantium quis consequatur, beatae temporibus nemo, tempora voluptatum,
-                    perspiciatis accusantium ullam molestiae cupiditate incidunt architecto.</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam praesentium laboriosam unde fuga
-                    accusamus reiciendis laudantium quis consequatur, beatae temporibus nemo, tempora voluptatum,
-                    perspiciatis accusantium ullam molestiae cupiditate incidunt architecto.</p>
+                {!! $post->body !!}
             </div>
         </div>
     </x-layout>
