@@ -29,7 +29,8 @@
                         data-placement="bottom"><i class="fas fa-search"></i></a>
                     <span class="text-white mr-2 header-chat-icon" title="Chat" data-toggle="tooltip"
                         data-placement="bottom"><i class="fas fa-comment"></i></span>
-                    <a href="#" class="mr-2"><img title="My Profile" data-toggle="tooltip" data-placement="bottom"
+                    <a href="/profile/{{ auth()->user()->username }}" class="mr-2"><img title="My Profile"
+                            data-toggle="tooltip" data-placement="bottom"
                             style="width: 32px; height: 32px; border-radius: 16px"
                             src="https://gravatar.com/avatar/f64fc44c03a8a7eb1d52502950879659?s=128" /></a>
                     <a class="btn btn-sm btn-success mr-2" href="/create-post">Create Post</a>
@@ -78,14 +79,12 @@
         </div>
     @endif
 
-
     {{ $slot }}
 
     <!-- footer begins -->
     <footer class="border-top text-center small text-muted py-3">
         <p class="m-0">Copyright &copy; {{ date('Y') }} <a href="/" class="text-muted">OurApp</a>. All
-            rights reserved.
-        </p>
+            rights reserved.</p>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
