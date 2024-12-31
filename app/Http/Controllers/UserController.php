@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
     public function storeAvatar(Request $request) {
-        $request->file('avatar')->store('public/avatars');
-        return 'hey';
+        $request->validate([
+            'avatar' => 'required|image|max:3000'
+        ]);
+        //image:makeerroe
     }
     public function showAvatarForm() {
         return view('avatar-form');
