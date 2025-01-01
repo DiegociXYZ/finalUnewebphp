@@ -15,8 +15,8 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/admins-only', function (){
-    return 'only admins';
+Route::get('/admins-only', function() {
+  return 'Only admins should be able to see this page.';
 })->middleware('can:visitAdminPages');
 
 // User related routes
@@ -35,6 +35,5 @@ Route::delete('/post/{post}', [PostController::class, 'delete'])->middleware('ca
 Route::get('/post/{post}/edit', [PostController::class, 'showEditForm'])->middleware('can:update,post');
 Route::put('/post/{post}', [PostController::class, 'actuallyUpdate'])->middleware('can:update,post');
 
-//profile related routes
-
+// Profile related routes
 Route::get('/profile/{user:username}', [UserController::class, 'profile']);
