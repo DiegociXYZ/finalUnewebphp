@@ -31,8 +31,6 @@ class ChatMessage implements ShouldBroadcastNow
      */
     public function broadcastOn(): array
     {
-        return [
-            new PrivateChannel('chatchannel'),
-        ];
+        return new PrivateChannel('chatchannel');
     }
 }

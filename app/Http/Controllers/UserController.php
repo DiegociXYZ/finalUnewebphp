@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Events\OurExampleEvent;
 use App\Models\Follow;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
 use Illuminate\Validation\Rule;
 use Intervention\Image\Facades\Image;
@@ -52,15 +54,23 @@ class UserController extends Controller
         $this->getSharedData($user);
         return view('profile-posts', ['posts' => $user->posts()->latest()->get()]);
     }
+    public function profileRaw(User $user) {
+        return response()->json(['theHTML' => view('profile-posts-only', ['posts' => $user->posts()->latest()->get()])->render(), 'docTitle' => $user->username."'s Profile"]);
+    }
     public function profileFollowers(User $user) {
         $this->getSharedData($user);
         return view('profile-followers', ['followers' => $user->followers()->latest()->get()]);
 
     }
+    public function profileFollowersRaw(User $user) {
+        return response()->json(['theHTML' => view('profile-followers-only', ['followers' => $user->followers()->latest()->get()])->render(), 'docTitle' => $user->username."'s Followers"]);
+    }
     public function profileFollowing(User $user) {
         $this->getSharedData($user);
         return view('profile-following', ['following' => $user->followingTheseUsers()->latest()->get()]);
 
+    }public function profileFollowingRaw(User $user) {
+        return response()->json(['theHTML' => view('profile-following-only', ['following' => $user->followingTheseUsers()->latest()->get()])->render(), 'docTitle' => 'Who '.$user->username."'s Follows"]);
     }
 
     public function logout() {
@@ -73,10 +83,28 @@ class UserController extends Controller
         if (auth()->check()) {
             return view('homepage-feed', ['posts' => auth()->user()->feedPosts()->latest()->paginate(4)]);
         } else {
-            return view('homepage');
+            $postCount = Cache::remember('postCount', 20, function(){
+                //sleep(5); //delete this sleep  is for testing cache
+                return Post::count();
+            });
+            return view('homepage', ['postCount' => $postCount]);
         }
     }
 
+    public function loginApi(Request $request){
+        $incomingFields = $request->validate([
+            'username' =>'required',
+            'password' => 'required'
+        ]);
+
+        if(auth()->attempt($incomingFields)){
+            $user = User::where('username', $incomingFields['username'])->first();
+            $token = $user->createToken('ourapptoken')->plainTextToken;
+            return $token;
+        }
+        return 'sorry';
+
+    }
     public function login(Request $request) {
         $incomingFields = $request->validate([
             'loginusername' => 'required',
